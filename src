@@ -32,20 +32,21 @@ import java.awt.*;
 import java.awt.event.MouseListener;
 import java.security.Key;
 
-public class Main extends Application {
+public class loginGUI extends Application {
 
-    static String US, PW;
+    static String usSIgnUP, pwSignUP;
+
+    Label loginFail = new Label("Please sign up.");
 
     @Override
     public void start(final Stage primaryStage) throws Exception{
-        //Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Login");
-        //primaryStage.setScene(new Scene(root, 300, 275))
         final GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(5);
-        grid.setVgap(10);
+        grid.setVgap(5);
         grid.setPadding(new Insets(25,25,25,25));
+        grid.add(loginFail, 0, 4);
         final Text sceneText = new Text("Login");
         sceneText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         grid.add(sceneText, 0, 0, 2, 1);
@@ -74,11 +75,12 @@ public class Main extends Application {
         registerButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                US = usernameLogin.getText().toString();
-                PW = passwordLogin.getText().toString();
-                System.out.println(US + "    " + PW);
+                usSIgnUP = usernameLogin.getText().toString();
+                pwSignUP = passwordLogin.getText().toString();
+                System.out.println(usSIgnUP + "    " + pwSignUP);
                 usernameLogin.clear();
                 passwordLogin.clear();
+                loginFail.setText("Please login");
             }
         });
 
@@ -91,16 +93,18 @@ public class Main extends Application {
                     usernameLogin.clear();
                     passwordLogin.clear();
                     System.out.println("User has not inputted a username and/or password");
-                    System.out.println(US + " " + usernameLogin.getText() + ". " + PW + " " + passwordLogin.getText());
-                }else if(US.equals(usernameLogin.getText()) && PW.equals(passwordLogin.getText())){
+                    loginFail.setText("Make sure all fields are filled");
+                    System.out.println(usSIgnUP + " " + usernameLogin.getText() + ". " + pwSignUP + " " + passwordLogin.getText());
+                }else if(usSIgnUP.equals(usernameLogin.getText()) && pwSignUP.equals(passwordLogin.getText())){
                     primaryStage.close();
                     menu();
-                    System.out.println(US + " " + usernameLogin.getText() + ". " + PW + " " + passwordLogin.getText());
+                    System.out.println(usSIgnUP + " " + usernameLogin.getText() + ". " + pwSignUP + " " + passwordLogin.getText());
                 }else{
                     usernameLogin.clear();
                     passwordLogin.clear();
+                    loginFail.setText("empty fields");
                     System.out.println("User has not inputted the correct username and/pr password");
-                    System.out.println(US + " " + usernameLogin.getText() + ". " + PW + " " + passwordLogin.getText());
+                    System.out.println(usSIgnUP + " " + usernameLogin.getText() + ". " + pwSignUP + " " + passwordLogin.getText());
                 }
             }
         });
@@ -108,14 +112,14 @@ public class Main extends Application {
         //Button registerButton = new Button("Register");
         //grid.add(registerButton, 2, 3);
 
-        final Scene scene = new Scene(grid,300, 275);
+        final Scene scene = new Scene(grid,400, 400);
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
                 if(usernameLogin.getLength() < 0 || passwordLogin.getLength() < 0){
                     usernameLogin.clear();
                     passwordLogin.clear();
-                }else if(US.equals(usernameLogin.getText()) && PW.equals(passwordLogin.getText())){
+                }else if(usSIgnUP.equals(usernameLogin.getText()) && pwSignUP.equals(passwordLogin.getText())){
                     primaryStage.close();
                     game();
                 }else{
@@ -223,16 +227,3 @@ public class Main extends Application {
         launch(args);
     }
 }
-/*
-remove the ENTER_KEY_LISTENER or try and catch
-remove on action for login button if the user has not registered yet
-improve game() scene
-    -randomly place the pictures
-    -have different pictures display
-    -create "refresh" button that will rearrange the pictures and show different ones
-    -create a score bar
-    -create a bar that displays the rock/mineral needed to be click
-    -improve multi-threading performance
-combine both game and menu stages to increase performance and efficiency
-try to keep the whole program structured with only two scenes.
-*/
